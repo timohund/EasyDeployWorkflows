@@ -1,0 +1,12 @@
+<phpunit bootstrap="phpunit.bootstrap.php" colors="true" backupGlobals="false"
+         backupStaticAttributes="false" syntaxCheck="false" stopOnFailure="false"
+         convertErrorsToExceptions="true" convertNoticesToExceptions="true"
+         convertWarningsToExceptions="true">
+    <testsuite name="Mocked">
+        <directory suffix="Test.php">./Mocked</directory>
+    </testsuite>
+    <php>
+        <ini name="memory_limit" value="50000M" />
+        <ini name="max_execution_time" value="5000" />
+    </php>
+</phpunit>
