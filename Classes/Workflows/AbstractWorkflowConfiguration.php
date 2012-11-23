@@ -48,4 +48,9 @@ abstract class AbstractWorkflowConfiguration extends AbstractConfiguration {
 	public function getInstallSilent() {
 		return $this->installSilent;
 	}
+
+	/**
+	 * @return string
+	 */
+	abstract function getWorkflowClassName();
 }

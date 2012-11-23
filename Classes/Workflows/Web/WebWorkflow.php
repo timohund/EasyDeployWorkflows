@@ -27,11 +27,11 @@ class WebWorkflow extends Workflows\AbstractWorkflow{
 	 */
 	public function __construct(\EasyDeployWorkflows\Workflows\InstanceConfiguration $instanceConfiguration, \EasyDeployWorkflows\Workflows\Web\WebConfiguration $workflowConfiguration) {
 		if (!$instanceConfiguration->isValid()) {
-			throw new InvalidArgumentException('Invalid instance configuration');
+			throw new \InvalidArgumentException('Invalid instance configuration');
 		}
 
 		if (!$workflowConfiguration->isValid()) {
-			throw new InvalidArgumentException('Invalid workflow configuration');
+			throw new \InvalidArgumentException('Invalid workflow configuration');
 		}
 
 		parent::__construct($instanceConfiguration,$workflowConfiguration);
@@ -43,8 +43,9 @@ class WebWorkflow extends Workflows\AbstractWorkflow{
 	 */
 	public function deploy($releaseVersion) {
 		$localServer = $this->getServer('localhost');
-		if($this->instanceConfiguration->isAllowedDeployServer($localServer->getHostname())) {
-			throw new InvalidArgumentException("Unallowed deploy server ".$localServer->getHostname());
+
+		if(!$this->instanceConfiguration->isAllowedDeployServer($localServer->getHostname())) {
+			throw new \InvalidArgumentException("Unallowed deploy server ".$localServer->getHostname());
 		}
 
 		$this->initDeploymentService();
@@ -56,7 +57,7 @@ class WebWorkflow extends Workflows\AbstractWorkflow{
 
 			$deploymentPackageSource 	= $this->workflowConfiguration->getDeploymentSource();
 			$deploymentPackage 			= sprintf($deploymentPackageSource,$releaseVersion);
-			$this->out('Start deploying Package: "'.$deploymentPackage.'"', EasyDeploy_Utils::MESSAGE_TYPE_INFO) ;
+			$this->out('Start deploying Package: "'.$deploymentPackage.'"', \EasyDeploy_Utils::MESSAGE_TYPE_INFO) ;
 			$deployService->deploy( $localServer, 'TYPO3-'.$releaseVersion, $deploymentPackage);
 
 		$this->afterDeployment();
@@ -80,21 +81,22 @@ class WebWorkflow extends Workflows\AbstractWorkflow{
 	 * @return void
 	 */
 	protected function initDeploymentService() {
-		$this->setDeploymentService(new EasyDeploy_DeployService($this->getInstallStrategy()));
+		$deployService = new \EasyDeploy_DeployService($this->getInstallStrategy());
+		$this->setDeploymentService($deployService);
 	}
 
 	/**
 	 * @param $deployService
 	 */
-	public function setDeploymentService(EasyDeploy_DeployService $deployService) {
+	public function setDeploymentService(\EasyDeploy_DeployService $deployService) {
 		$this->deployService = $deployService;
 	}
 
 	/**
-	 * @return EasyDeploy_DeployService
+	 * @return \EasyDeploy_DeployService
 	 */
 	protected function getDeploymentService() {
-		$this->deployService;
+		return $this->deployService;
 	}
 
 	/**
@@ -102,14 +104,14 @@ class WebWorkflow extends Workflows\AbstractWorkflow{
 	 * @return void
 	 */
 	protected function prepareIndexerDeployment() {
-		foreach ($this->workflowConfiguration->getIndexerServer() as $serverName) {
+		foreach ($this->workflowConfiguration->getIndexerServers() as $serverName) {
 
 			$server = $this->getServer($serverName);
 			$indexerDataFolder = $this->workflowConfiguration->getIndexerDataFolder();
 
 			if (!$server->isDir($indexerDataFolder)) {
 				$message = 'indexerDataFolder on IndexerNode is not present! Try to create "'.indexerDataFolder.'"';
-				$this->out($message, EasyDeploy_Utils::MESSAGE_TYPE_WARNING);
+				$this->out($message, \EasyDeploy_Utils::MESSAGE_TYPE_WARNING);
 
 				$server->run('mkdir -p '.$indexerDataFolder);
 				$server->run('chmod g+rws '.$indexerDataFolder);
@@ -117,8 +119,8 @@ class WebWorkflow extends Workflows\AbstractWorkflow{
 
 			if (!$server->isDir($indexerDataFolder)) {
 				$message = 'indexerDataFolder on IndexerNode "'.$serverName.'" is not present! Could not create "'.indexerDataFolder.'"';
-				$this->out($message, EasyDeploy_Utils::MESSAGE_TYPE_ERROR);
-				throw new Exception('indexerDataFolder on IndexerNode "'.$serverName.'" is not present!');
+				$this->out($message, \EasyDeploy_Utils::MESSAGE_TYPE_ERROR);
+				throw new \Exception('indexerDataFolder on IndexerNode "'.$serverName.'" is not present!');
 			}
 		}
 	}
@@ -139,24 +141,24 @@ class WebWorkflow extends Workflows\AbstractWorkflow{
 
 			if ($server->isFile($script)) {
 				$message = 'NFS to Local Sync for "'.$serverName.'"';
-				$this->out($message, EasyDeploy_Utils::MESSAGE_TYPE_INFO);
+				$this->out($message, \EasyDeploy_Utils::MESSAGE_TYPE_INFO);
 				$server->run($script, TRUE);
 			} else {
 				$message = 'NO NFS to Local Sync for "'.$serverName.'" required. (Script is not configured on Server)';
-				$this->out($message, EasyDeploy_Utils::MESSAGE_TYPE_WARNING);
+				$this->out($message, \EasyDeploy_Utils::MESSAGE_TYPE_WARNING);
 			}
 		}
 	}
 
 	/**
-	 * @param EasyDeploy_AbstractServer $server
-	 * @param EasyDeploy_DeployService $deployService
+	 * @param \EasyDeploy_AbstractServer $server
+	 * @param \EasyDeploy_DeployService $deployService
 	 * @return bool
 	 * @throws Exception
 	 */
-	protected function downloadAndUseMinifiedBackup(EasyDeploy_AbstractServer $server, EasyDeploy_DeployService $deployService) {
+	protected function downloadAndUseMinifiedBackup(\EasyDeploy_AbstractServer $server, \EasyDeploy_DeployService $deployService) {
 
-		$this->out('Checking The Existence of BackupStorage', EasyDeploy_Utils::MESSAGE_TYPE_WARNING);
+		$this->out('Checking The Existence of BackupStorage', \EasyDeploy_Utils::MESSAGE_TYPE_WARNING);
 
 		$backupStorageRoot 			= $this->workflowConfiguration->getBackupStorageRootFolder();
 		$backupMasterEnvironment	= $this->workflowConfiguration->getBackupMasterEnvironment();
@@ -165,13 +167,13 @@ class WebWorkflow extends Workflows\AbstractWorkflow{
 			return true;
 		}
 
-		$this->out('Ohoh! Production Backup not available... Getting at least a minified backup', EasyDeploy_Utils::MESSAGE_TYPE_WARNING);
+		$this->out('Ohoh! Production Backup not available... Getting at least a minified backup', \EasyDeploy_Utils::MESSAGE_TYPE_WARNING);
 
 		$minifiedBackupRootFolder = $this->workflowConfiguration->getBackupStorageMinifiedRootFolder();
 		$server->run('mkdir -p ' . $minifiedBackupRootFolder);
 
 		if (!$this->workflowConfiguration->hasMinifiedBackupSource()) {
-			throw new Exception('No minified Backup source given. Check minified root configuration');
+			throw new \Exception('No minified Backup source given. Check minified root configuration');
 		}
 
 		$minifiedBackupSource = $this->workflowConfiguration->getMinifiedBackupSource();
@@ -184,7 +186,7 @@ class WebWorkflow extends Workflows\AbstractWorkflow{
 		}
 
 		if (!$this->hasBackupStorage($server,$minifiedBackupRootFolder, $backupMasterEnvironment)) {
-			throw new Exception('Even no minified Backup is available. Check the download Source');
+			throw new \Exception('Even no minified Backup is available. Check the download Source');
 		}
 
 		//fake that minified is new
@@ -196,12 +198,12 @@ class WebWorkflow extends Workflows\AbstractWorkflow{
 	}
 
 	/**
-	 * @param EasyDeploy_AbstractServer $server
+	 * @param \EasyDeploy_AbstractServer $server
 	 * @param string $root
 	 * @param string $environment
 	 * @return bool
 	 */
-	private function hasBackupStorage(EasyDeploy_AbstractServer $server, $root, $environment) {
+	private function hasBackupStorage(\EasyDeploy_AbstractServer $server, $root, $environment) {
 		if ($server->isDir($root)
 			&& $server->isDir($root.'/'.$environment)
 			&& $server->isDir($root.'/'.$environment.'/files') ) {
@@ -213,10 +215,10 @@ class WebWorkflow extends Workflows\AbstractWorkflow{
 	}
 
 	/**
-	 * @return EasyDeploy_InstallStrategy_WebProjectPHPInstaller
+	 * @return \EasyDeploy_InstallStrategy_WebProjectPHPInstaller
 	 */
 	protected function getInstallStrategy() {
-		$strategy = new EasyDeploy_InstallStrategy_WebProjectPHPInstaller();
+		$strategy = new \EasyDeploy_InstallStrategy_WebProjectPHPInstaller();
 
 		if ($this->workflowConfiguration->isBackupMasterEnvironment($this->instanceConfiguration->getEnvironmentName())) {
 			$strategy->setCreateBackupBeforeInstalling(TRUE);
@@ -225,13 +227,14 @@ class WebWorkflow extends Workflows\AbstractWorkflow{
 		}
 
 		$strategy->setSilentMode($this->workflowConfiguration->getInstallSilent());
+
 		return $strategy;
 	}
 
 	/**
-	 * @param EasyDeploy_DeployService $deployService
+	 * @param \EasyDeploy_DeployService $deployService
 	 */
-	protected function prepareDeployService(EasyDeploy_DeployService $deployService ) {
+	protected function prepareDeployService(\EasyDeploy_DeployService $deployService ) {
 		$deployService->setEnvironmentName($this->instanceConfiguration->getEnvironmentName());
 		$deployService->setDeliveryFolder($this->instanceConfiguration->getDeliveryFolder());
 

@@ -208,4 +208,11 @@ class WebConfiguration extends Workflows\AbstractWorkflowConfiguration {
 	public function getMinifiedBackupSource() {
 		return $this->minifiedBackupSource;
 	}
+
+	/**
+	 * @return string
+	 */
+	public function getWorkflowClassName() {
+		return 'EasyDeployWorkflows\Workflows\Web\WebWorkflow';
+	}
 }

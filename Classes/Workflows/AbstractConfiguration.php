@@ -96,4 +96,6 @@ abstract class AbstractConfiguration {
 	 * @return boolean
 	 */
 	abstract function isValid();
+
+
 }

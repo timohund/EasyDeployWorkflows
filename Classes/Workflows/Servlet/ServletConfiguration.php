@@ -10,7 +10,7 @@ class ServletConfiguration extends Workflows\AbstractWorkflowConfiguration {
 	 *
 	 * @var string
 	 */
-	protected $tomcatVersion = '';
+	protected $tomcatVersion = '6';
 
 	/**
 	 * @var string
@@ -147,5 +147,12 @@ class ServletConfiguration extends Workflows\AbstractWorkflowConfiguration {
 	 */
 	public function isValid() {
 		return $this->getTomcatVersion() != '' && $this->hasServletServers() && $this->tomcatPassword != '' && $this->tomcatPassword != '';
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getWorkflowClassName() {
+		return 'EasyDeployWorkflows\Workflows\Servlet\ServletWorkflow';
 	}
 }

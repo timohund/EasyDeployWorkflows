@@ -66,4 +66,11 @@ class SolrConfiguration extends Workflows\AbstractWorkflowConfiguration {
 	public function isValid() {
 		return $this->restartCommand != '' && $this->instancePath != '';
 	}
+
+	/**
+	 * @return string
+	 */
+	public function getWorkflowClassName() {
+		return 'EasyDeployWorkflows\Workflows\Solr\SolrWorkflow';
+	}
 }
