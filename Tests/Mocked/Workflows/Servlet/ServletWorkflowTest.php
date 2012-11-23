@@ -11,64 +11,66 @@ require_once EASYDEPLOY_WORKFLOW_ROOT . 'Classes/Workflows/Servlet/ServletWorkfl
 class ServletWorkflowTest extends PHPUnit_Framework_TestCase {
 
 	/**
-	 * @var ServletWorkflow
-	 */
-	protected $workflow;
-
-	/**
-	 *@var Servlet\ServletConfiguration
-	 */
-	protected $workflowConfiguration;
-
-	/**
-	 * @var InstanceConfiguration
-	 */
-	protected $instanceConfiguration;
-
-	/**
-	 * @var
-	 */
-	protected $downloaderMock = null;
-	/**
 	 *
 	 * @test
 	 * @return void
 	 */
 	public function canDeployToTwoTomcatServers() {
-		$this->workflowConfiguration = new Servlet\ServletConfiguration();
-		$this->instanceConfiguration = new Workflows\InstanceConfiguration();
+		$workflowConfiguration = new Servlet\ServletConfiguration();
+		$instanceConfiguration = new Workflows\InstanceConfiguration();
 
-		$this->workflowConfiguration
-				->setInstallSilent(false)
-				->addServletServer('solr.company.com')
+		$workflowConfiguration
+				->addServletServer('solr1.company.com')
+				->addServletServer('solr2.company.com')
 				->setTomcatPort(8080)
 				->setTomcatUsername('foo')
 				->setTomcatPassword('bar')
 				->setTomcatVersion('6.0.12')
-				->setDeploymentPackageSource('/home/homer.simpson');
+				->setDeploymentPackageSource('/home/homer.simpson/%s')
+				->setInstallSilent(false);
 
-		$this->instanceConfiguration
+		$instanceConfiguration
 				->setProjectName('nasa')
 				->addAllowedDeployServer('localhost')
 				->setEnvironmentName('deploy')
 				->setDeliveryFolder('/home/download');
 
-		$this->downloaderMock = $this->getMock('EasyDeploy_Helper_Downloader',array(),array(),'',false);
-
-		/**
-		 * @var $this->workflow ServletWorkflow
-		 */
-		$this->workflow = $this->getMock(
+			/** @var $workflow  EasyDeployWorkflows\Workflows\Servlet\ServletWorkflow */
+		$workflow = $this->getMock(
 			'EasyDeployWorkflows\Workflows\Servlet\ServletWorkflow',
 			array('getServer'),
-			array($this->instanceConfiguration, $this->workflowConfiguration),
+			array($instanceConfiguration, $workflowConfiguration),
 			''
 		);
 
-		$this->workflow->injectDownloader($this->downloaderMock);
+		$localServerMock	 = $this->getMock('EasyDeploy_LocalServer',array(),array(),'',false);
+		$solr1ServerMock	 = $this->getMock('EasyDeploy_RemoteServer',array('copyLocalFile','run'),array(),'',false);
+		$solr2ServerMock	 = $this->getMock('EasyDeploy_RemoteServer',array('copyLocalFile','run'),array(),'',false);
 
-		//todo
+		$workflow->expects($this->exactly(3))->method('getServer')->will($this->returnCallback(
+			function($hostName) use ($localServerMock, $solr1ServerMock, $solr2ServerMock)  {
+				if($hostName == 'localhost') {
+					return $localServerMock;
+				} elseif($hostName == 'solr1.company.com') {
+					return $solr1ServerMock;
+				} elseif($hostName == 'solr2.company.com') {
+					return $solr2ServerMock;
+				}
+			}
+		));
 
+			//will the download be triggered with the expected arguments ?
+		$downloaderMock = $this->getMock('EasyDeploy_Helper_Downloader',array('download'),array(),'',false);
+		$downloaderMock->expects($this->once())->method('download')->with(
+			$localServerMock,'/home/homer.simpson/4711','/home/download/4711'
+		);
+
+		$workflow->injectDownloader($downloaderMock);
+
+			//does the deploy service execute the expected commands on the remote solr servers?
+		$solr1ServerMock->expects($this->once())->method('run')->with('curl --upload-file /tmp/4711 -u foo:bar "http://localhost:8080/manager/deploy?path=&update=true"');
+		$solr2ServerMock->expects($this->once())->method('run')->with('curl --upload-file /tmp/4711 -u foo:bar "http://localhost:8080/manager/deploy?path=&update=true"');
+		$workflow->deploy('4711');
 	}
 
 }
