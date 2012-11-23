@@ -55,10 +55,12 @@ class WebWorkflow extends Workflows\AbstractWorkflow{
 
 		$this->beforeDeployment();
 
-			$deploymentPackageSource 	= $this->workflowConfiguration->getDeploymentSource();
-			$deploymentPackage 			= sprintf($deploymentPackageSource,$releaseVersion);
-			$this->out('Start deploying Package: "'.$deploymentPackage.'"', \EasyDeploy_Utils::MESSAGE_TYPE_INFO) ;
-			$deployService->deploy( $localServer, 'TYPO3-'.$releaseVersion, $deploymentPackage);
+		$this->out('Start deploying Package: "'.$this->workflowConfiguration->getDeploymentSource().'"', \EasyDeploy_Utils::MESSAGE_TYPE_INFO) ;
+
+		$downloadTarget = $this->instanceConfiguration->getDeliveryFolder() . '/' . $releaseVersion;
+		$deploymentPackageSource 			= sprintf($this->workflowConfiguration->getDeploymentSource(),$releaseVersion);
+		$downloadedReleaseDirectory = $this->downloader->download($localServer, $deploymentPackageSource, $downloadTarget);
+		$deployService->installPackage($localServer,$downloadedReleaseDirectory);
 
 		$this->afterDeployment();
 	}

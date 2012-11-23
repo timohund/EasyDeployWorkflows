@@ -17,7 +17,7 @@ abstract class AbstractWorkflow {
 	protected $workflowConfiguration;
 
 	/**
-	 * @var EasyDeploy_Helper_Downloader
+	 * @var \EasyDeploy_Helper_Downloader
 	 */
 	protected $downloader;
 
