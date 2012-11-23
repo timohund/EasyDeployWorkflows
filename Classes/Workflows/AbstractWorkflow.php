@@ -2,6 +2,8 @@
 
 namespace EasyDeployWorkflows\Workflows;
 
+use EasyDeployWorkflows\Workflows;
+
 abstract class AbstractWorkflow {
 
 	/**
@@ -15,14 +17,26 @@ abstract class AbstractWorkflow {
 	protected $workflowConfiguration;
 
 	/**
+	 * @var EasyDeploy_Helper_Downloader
+	 */
+	protected $downloader;
+
+	/**
 	 * @param InstanceConfiguration $instanceConfiguration
-	 * @param AbstractConfiguration $workflowConfiguration
+	 * @param AbstractWorkflowConfiguration $workflowConfiguration
 	 */
 	public function __construct(	InstanceConfiguration $instanceConfiguration,
-									AbstractConfiguration $workflowConfiguration
+									AbstractWorkflowConfiguration $workflowConfiguration
 								) {
 		$this->instanceConfiguration = $instanceConfiguration;
 		$this->workflowConfiguration = $workflowConfiguration;
+	}
+
+	/**
+	 * @param \EasyDeploy_Helper_Downloader $downloader
+	 */
+	public function injectDownloader(\EasyDeploy_Helper_Downloader $downloader) {
+		$this->downloader = $downloader;
 	}
 
 	/**
@@ -31,6 +45,18 @@ abstract class AbstractWorkflow {
 	 */
 	protected function out($message, $type='') {
 		echo EasyDeploy_Utils::formatMessage($message,$type).PHP_EOL;
+	}
+
+	/**
+	 * @param string $serverName
+	 * @return EasyDeploy_LocalServer|EasyDeploy_RemoteServer
+	 */
+	protected function getServer($serverName) {
+		if ($serverName == 'localhost') {
+			return new EasyDeploy_LocalServer($serverName);
+		}
+
+		return new EasyDeploy_RemoteServer($serverName);
 	}
 
 	/**

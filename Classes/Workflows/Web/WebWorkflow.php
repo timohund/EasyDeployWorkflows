@@ -1,9 +1,10 @@
 <?php
 
-use \EasyDeployWorkflows\Workflows\Web;
-use \EasyDeployWorkflows\Workflows;
+namespace EasyDeployWorkflows\Workflows\Web;
 
-class Workflow extends \EasyDeployWorkflows\Workflows\AbstractWorkflow{
+use EasyDeployWorkflows\Workflows as Workflows;
+
+class WebWorkflow extends Workflows\AbstractWorkflow{
 
 	/**
 	 * @var \EasyDeployWorkflows\Workflows\InstanceConfiguration
@@ -14,11 +15,6 @@ class Workflow extends \EasyDeployWorkflows\Workflows\AbstractWorkflow{
 	 * @var \EasyDeployWorkflows\Workflows\Web\WebConfiguration
 	 */
 	protected $workflowConfiguration;
-
-	/**
-	 * @var EasyDeploy_Helper_Downloader
-	 */
-	protected $downloader;
 
 	/**
 	 * @var
@@ -39,14 +35,6 @@ class Workflow extends \EasyDeployWorkflows\Workflows\AbstractWorkflow{
 		}
 
 		parent::__construct($instanceConfiguration,$workflowConfiguration);
-		$this->injectDownloader(new EasyDeploy_Helper_Downloader());
-	}
-
-	/**
-	 * @param EasyDeploy_Helper_Downloader $downloader
-	 */
-	public function injectDownloader(EasyDeploy_Helper_Downloader $downloader) {
-		$this->downloader = $downloader;
 	}
 
 	/**
@@ -250,17 +238,5 @@ class Workflow extends \EasyDeployWorkflows\Workflows\AbstractWorkflow{
 		$deployService->setDeployerUnixGroup($this->workflowConfiguration->getApacheGroup());
 		$deployService->setSystemPath($this->workflowConfiguration->getWebRootFolder());
 		$deployService->setBackupstorageroot($this->workflowConfiguration->getWebRootFolder());
-	}
-
-	/**
-	 * @param string $serverName
-	 * @return EasyDeploy_LocalServer|EasyDeploy_RemoteServer
-	 */
-	protected function getServer($serverName) {
-		if ($serverName == 'localhost') {
-			return new EasyDeploy_LocalServer($serverName);
-		}
-
-		return new EasyDeploy_RemoteServer($serverName);
 	}
 }
