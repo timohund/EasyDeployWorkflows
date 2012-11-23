@@ -4,7 +4,7 @@ namespace EasyDeployWorkflows\Workflows;
 
 use EasyDeployWorkflows\Workflows;
 
-class InstanceConfiguration extends \AbstractConfiguration {
+class InstanceConfiguration extends AbstractConfiguration {
 
 	/**
 	 * @var string

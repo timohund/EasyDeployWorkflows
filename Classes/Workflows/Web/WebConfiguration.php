@@ -2,9 +2,9 @@
 
 namespace EasyDeployWorkflows\Workflows\Web;
 
-use EasyDeployWorkflows\Workflows;
+use EasyDeployWorkflows\Workflows as Workflows;
 
-class WebConfiguration extends \AbstractConfiguration {
+class WebConfiguration extends Workflows\AbstractWorkflowConfiguration {
 
 	/**
 	 * Name of the environment that should be used as master for backups.
@@ -12,7 +12,6 @@ class WebConfiguration extends \AbstractConfiguration {
 	 * @var string
 	 */
 	protected $backupMasterEnvironment = '';
-
 
 	/**
 	 * @var string

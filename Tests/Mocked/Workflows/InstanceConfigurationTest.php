@@ -2,7 +2,8 @@
 
 use EasyDeployWorkflows\Workflows;
 
-require_once EASYDEPLOY_WORKFLOW_ROOT.'Classes/Workflows/AbstractConfiguration.php';
+require_once EASYDEPLOY_WORKFLOW_ROOT . 'Classes/Workflows/AbstractConfiguration.php';
+require_once EASYDEPLOY_WORKFLOW_ROOT . 'Classes/Workflows/AbstractWorkflowConfiguration.php';
 require_once EASYDEPLOY_WORKFLOW_ROOT . 'Classes/Workflows/InstanceConfiguration.php';
 
 class InstanceConfigurationTest extends PHPUnit_Framework_TestCase {
