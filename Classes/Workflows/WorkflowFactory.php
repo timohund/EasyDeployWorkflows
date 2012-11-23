@@ -4,6 +4,19 @@ namespace EasyDeployWorkflows\Workflows;
 
 use EasyDeployWorkflows\Workflows;
 
+require_once dirname(__FILE__) . '/AbstractConfiguration.php';
+require_once dirname(__FILE__) . '/AbstractWorkflowConfiguration.php';
+require_once dirname(__FILE__) . '/AbstractWorkflow.php';
+
+require_once dirname(__FILE__) . '/InstanceConfiguration.php';
+
+require_once dirname(__FILE__) . '/Servlet/ServletConfiguration.php';
+require_once dirname(__FILE__) . '/Servlet/ServletWorkflow.php';
+
+require_once dirname(__FILE__) . '/Web/WebConfiguration.php';
+require_once dirname(__FILE__) . '/Web/WebWorkflow.php';
+
+
 class WorkflowFactory {
 
 	/**
@@ -11,6 +24,7 @@ class WorkflowFactory {
 	 *
 	 * @param InstanceConfiguration $instanceConfiguration
 	 * @param AbstractWorkflowConfiguration $workflowConfiguration
+	 * @return AbstractWorkflow
 	 */
 	public function create(	InstanceConfiguration $instanceConfiguration,
 							AbstractWorkflowConfiguration $workflowConfiguration
@@ -30,7 +44,7 @@ class WorkflowFactory {
 		}
 
 		$workflow->injectDownloader(new \EasyDeploy_Helper_Downloader());
-
+		return $workflow;
 	}
 
 }

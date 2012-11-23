@@ -104,10 +104,12 @@ class ServletConfiguration extends Workflows\AbstractWorkflowConfiguration {
 
 	/**
 	 * @param string $hostname
-	 * @return EasyDeployWorkflows\Workflows\Servlet\ServletConfiguration
+	 * @return ServletConfiguration
 	 */
 	public function addServletServer($hostName) {
-		return $this->addServer($hostName,'servlet');
+		$this->addServer($hostName,'servlet');
+
+		return $this;
 	}
 
 	/**

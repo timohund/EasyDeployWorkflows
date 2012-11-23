@@ -9,7 +9,7 @@ abstract class AbstractWorkflowConfiguration extends AbstractConfiguration {
 	/**
 	 * @var string
 	 */
-	protected $deploymentPackageSource = '';
+	protected $deploymentSource = '';
 
 	/**
 	 * @var boolean
@@ -20,8 +20,8 @@ abstract class AbstractWorkflowConfiguration extends AbstractConfiguration {
 	/**
 	 * @param $packageSource
 	 */
-	public function setDeploymentPackageSource($packageSource) {
-		$this->deploymentPackageSource = $packageSource;
+	public function setDeploymentSource($packageSource) {
+		$this->deploymentSource = $packageSource;
 
 		return $this;
 	}
@@ -29,8 +29,8 @@ abstract class AbstractWorkflowConfiguration extends AbstractConfiguration {
 	/**
 	 * @return string
 	 */
-	public function getDeploymentPackageSource() {
-		return $this->deploymentPackageSource;
+	public function getDeploymentSource() {
+		return $this->deploymentSource;
 	}
 
 	/**

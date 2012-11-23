@@ -54,7 +54,7 @@ class WebWorkflow extends Workflows\AbstractWorkflow{
 
 		$this->beforeDeployment();
 
-			$deploymentPackageSource 	= $this->workflowConfiguration->getDeploymentPackageSource();
+			$deploymentPackageSource 	= $this->workflowConfiguration->getDeploymentSource();
 			$deploymentPackage 			= sprintf($deploymentPackageSource,$releaseVersion);
 			$this->out('Start deploying Package: "'.$deploymentPackage.'"', EasyDeploy_Utils::MESSAGE_TYPE_INFO) ;
 			$deployService->deploy( $localServer, 'TYPO3-'.$releaseVersion, $deploymentPackage);
