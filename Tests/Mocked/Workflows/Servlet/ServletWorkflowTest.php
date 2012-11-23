@@ -26,7 +26,7 @@ class ServletWorkflowTest extends PHPUnit_Framework_TestCase {
 				->setTomcatUsername('foo')
 				->setTomcatPassword('bar')
 				->setTomcatVersion('6.0.12')
-				->setDeploymentPackageSource('/home/homer.simpson/%s')
+				->setDeploymentSource('/home/homer.simpson/%s')
 				->setInstallSilent(false);
 
 		$instanceConfiguration

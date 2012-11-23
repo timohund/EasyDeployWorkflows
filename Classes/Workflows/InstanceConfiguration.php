@@ -3,6 +3,7 @@
 namespace EasyDeployWorkflows\Workflows;
 
 use EasyDeployWorkflows\Workflows;
+use EasyDeployWorkflows\Workflows\Exception as Exception;
 
 class InstanceConfiguration extends AbstractConfiguration {
 
@@ -117,8 +118,21 @@ class InstanceConfiguration extends AbstractConfiguration {
 
 	/**
 	 * @return bool
+	 * @throws Exception\InvalidConfigurationException
 	 */
-	public function isValid() {
-		return $this->hasAllowedDeployServers() && $this->hasEnvironmentName() && $this->hasDeliveryFolder();
+	public function validate() {
+		if(!$this->hasAllowedDeployServers()) {
+			throw new Exception\InvalidConfigurationException('Please configure an allowed deploy server!');
+		}
+
+		if(!$this->hasEnvironmentName()) {
+			throw new Exception\InvalidConfigurationException('Please configure an environment name!');
+		}
+
+		if(!$this->hasDeliveryFolder()) {
+			throw new Exception\InvalidConfigurationException("Please configure a delivery folder!");
+		}
+
+		return true;
 	}
 }

@@ -3,6 +3,8 @@
 namespace EasyDeployWorkflows\Workflows\Web;
 
 use EasyDeployWorkflows\Workflows as Workflows;
+use EasyDeployWorkflows\Workflows\Exception as Exception;
+
 
 class WebConfiguration extends Workflows\AbstractWorkflowConfiguration {
 
@@ -179,14 +181,6 @@ class WebConfiguration extends Workflows\AbstractWorkflowConfiguration {
 		return $this->getServers('indexer');
 	}
 
-
-	/**
-	 * @return bool
-	 */
-	public function isValid() {
-		return $this->hasWebServers() && $this->hasWebRootFolder();
-	}
-
 	/**
 	 * @param string $minifiedBackupSource
 	 */
@@ -215,4 +209,20 @@ class WebConfiguration extends Workflows\AbstractWorkflowConfiguration {
 	public function getWorkflowClassName() {
 		return 'EasyDeployWorkflows\Workflows\Web\WebWorkflow';
 	}
+
+	/**
+	 * @return bool
+	 */
+	public function validate() {
+		if(!$this->hasWebServers()) {
+			throw new Exception\InvalidConfigurationException("Please configure at least one web for workflow: ".get_class($this));
+		}
+
+		if(!$this->hasWebRootFolder()) {
+			throw new Exception\InvalidConfigurationException("Please configure the webroot folder for workflow: ".get_class($this));
+		}
+
+		return true;
+	}
+
 }
