@@ -17,6 +17,9 @@ require_once dirname(__FILE__) . '/Web/WebConfiguration.php';
 require_once dirname(__FILE__) . '/Web/WebWorkflow.php';
 
 
+require_once dirname(__FILE__) . '/Solr/SolrConfiguration.php';
+require_once dirname(__FILE__) . '/Solr/SolrWorkflow.php';
+
 class WorkflowFactory {
 
 	/**
