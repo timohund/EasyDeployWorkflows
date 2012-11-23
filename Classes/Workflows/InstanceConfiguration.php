@@ -23,10 +23,12 @@ class InstanceConfiguration extends AbstractConfiguration {
 
 	/**
 	 * @param $hostname
-	 * @return \AbstractConfiguration
+	 * @return InstanceConfiguration
 	 */
 	public function addAllowedDeployServer($hostname) {
-		return $this->addServer($hostname,'allowed_deploy_servers');
+		$this->addServer($hostname,'allowed_deploy_servers');
+
+		return $this;
 	}
 
 	/**

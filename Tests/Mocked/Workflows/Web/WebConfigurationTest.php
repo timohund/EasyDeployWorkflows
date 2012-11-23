@@ -90,7 +90,7 @@ class WebConfigurationTest extends PHPUnit_Framework_TestCase {
 	 * @test
 	 */
 	public function setDeploymentPackageSource() {
-		$this->assertEquals($this->configuration->getDeploymentPackageSource(),'');
+		$this->assertEquals($this->configuration->getDeploymentSource(),'');
 	}
 
 	/**
