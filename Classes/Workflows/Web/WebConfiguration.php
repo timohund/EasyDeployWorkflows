@@ -88,9 +88,11 @@ class WebConfiguration extends Workflows\AbstractWorkflowConfiguration {
 
 	/**
 	 * @param string $backupStorageRoot
+	 * @return WebConfiguration
 	 */
 	public function setBackupStorageRootFolder($backupStorageRoot) {
-		return $this->setFolder($backupStorageRoot, 'backupstorage');
+		$this->setFolder($backupStorageRoot, 'backupstorage');
+		return $this;
 	}
 
 	/**
@@ -102,9 +104,11 @@ class WebConfiguration extends Workflows\AbstractWorkflowConfiguration {
 
 	/**
 	 * @param string $backupStorageMinifiedRoot
+	 * @return WebConfiguration
 	 */
 	public function setBackupStorageMinifiedRootFolder($backupStorageMinifiedRoot) {
-		return $this->setFolder($backupStorageMinifiedRoot, 'backupstorage_minified');
+		$this->setFolder($backupStorageMinifiedRoot, 'backupstorage_minified');
+		return $this;
 	}
 
 	/**
@@ -130,9 +134,11 @@ class WebConfiguration extends Workflows\AbstractWorkflowConfiguration {
 
 	/**
 	 * @param string $hostName
+	 * @return WebConfiguration
 	 */
 	public function addWebServer($hostName) {
-		return $this->addServer($hostName,'www');
+		$this->addServer($hostName,'www');
+		return $this;
 	}
 
 	/**
@@ -159,9 +165,11 @@ class WebConfiguration extends Workflows\AbstractWorkflowConfiguration {
 
 	/**
 	 * @param string $hostName
+	 * @return WebConfiguration
 	 */
 	public function addIndexerServer($hostName) {
-		return $this->addServer($hostName,'indexer');
+		$this->addServer($hostName,'indexer');
+		return $this;
 	}
 
 	/**
@@ -199,5 +207,12 @@ class WebConfiguration extends Workflows\AbstractWorkflowConfiguration {
 	 */
 	public function getMinifiedBackupSource() {
 		return $this->minifiedBackupSource;
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getWorkflowClassName() {
+		return 'EasyDeployWorkflows\Workflows\Web\WebWorkflow';
 	}
 }

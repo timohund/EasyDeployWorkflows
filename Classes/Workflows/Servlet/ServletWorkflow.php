@@ -43,7 +43,7 @@ class ServletWorkflow extends Workflows\AbstractWorkflow {
 	 */
 	public function deploy($releaseVersion) {
 		$localServer 				= $this->getServer('localhost');
-		$deploymentPackageSource	= $this->workflowConfiguration->getDeploymentPackageSource();
+		$deploymentPackageSource	= $this->workflowConfiguration->getDeploymentSource();
 		$deliveryFolder				= $this->instanceConfiguration->getDeliveryFolder();
 
 		$downloadSource 			= sprintf($deploymentPackageSource, $releaseVersion);

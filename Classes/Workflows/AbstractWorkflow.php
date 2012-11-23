@@ -44,19 +44,19 @@ abstract class AbstractWorkflow {
 	 * @param string $type
 	 */
 	protected function out($message, $type='') {
-		echo EasyDeploy_Utils::formatMessage($message,$type).PHP_EOL;
+		echo \EasyDeploy_Utils::formatMessage($message,$type).PHP_EOL;
 	}
 
 	/**
 	 * @param string $serverName
-	 * @return EasyDeploy_LocalServer|EasyDeploy_RemoteServer
+	 * @return \EasyDeploy_LocalServer|\EasyDeploy_RemoteServer
 	 */
 	protected function getServer($serverName) {
 		if ($serverName == 'localhost') {
-			return new EasyDeploy_LocalServer($serverName);
+			return new \EasyDeploy_LocalServer($serverName);
 		}
 
-		return new EasyDeploy_RemoteServer($serverName);
+		return new \EasyDeploy_RemoteServer($serverName);
 	}
 
 	/**
