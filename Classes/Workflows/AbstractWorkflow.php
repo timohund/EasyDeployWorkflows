@@ -28,6 +28,14 @@ abstract class AbstractWorkflow {
 	public function __construct(	InstanceConfiguration $instanceConfiguration,
 									AbstractWorkflowConfiguration $workflowConfiguration
 								) {
+		if (!$instanceConfiguration->isValid()) {
+			throw new \InvalidArgumentException('Invalid instance configuration');
+		}
+
+		if (!$workflowConfiguration->isValid()) {
+			throw new \InvalidArgumentException('Invalid workflow configuration');
+		}
+
 		$this->instanceConfiguration = $instanceConfiguration;
 		$this->workflowConfiguration = $workflowConfiguration;
 	}

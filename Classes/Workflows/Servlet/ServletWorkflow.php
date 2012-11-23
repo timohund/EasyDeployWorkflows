@@ -6,10 +6,6 @@ use EasyDeployWorkflows\Workflows as Workflows;
 
 class ServletWorkflow extends Workflows\AbstractWorkflow {
 
-	/**
-	 * @var \EasyDeployWorkflows\Workflows\InstanceConfiguration
-	 */
-	protected $instanceConfiguration;
 
 	/**
 	 * @var \EasyDeployWorkflows\Workflows\Servlet\ServletConfiguration
@@ -21,21 +17,6 @@ class ServletWorkflow extends Workflows\AbstractWorkflow {
 	 */
 	const CURL_DEPLOY_COMMAND = 'curl --upload-file %s -u %s "http://localhost:%s/manager/deploy?path=%s&update=true"';
 
-	/**
-	 * @param InstanceConfiguration $instanceConfiguration
-	 * @param ServletConfiguration $workflowConfiguration
-	 */
-	public function __construct(Workflows\InstanceConfiguration $instanceConfiguration, ServletConfiguration $workflowConfiguration) {
-		if (!$instanceConfiguration->isValid()) {
-			throw new \InvalidArgumentException('Invalid instance configuration');
-		}
-
-		if (!$workflowConfiguration->isValid()) {
-			throw new \InvalidArgumentException('Invalid workflow configuration');
-		}
-
-		parent::__construct($instanceConfiguration,$workflowConfiguration);
-	}
 
 	/**
 	 * @param string $releaseVersion
