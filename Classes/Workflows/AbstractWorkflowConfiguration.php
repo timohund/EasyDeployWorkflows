@@ -16,7 +16,6 @@ abstract class AbstractWorkflowConfiguration extends AbstractConfiguration {
 	 */
 	protected $installSilent = false;
 
-
 	/**
 	 * @param $packageSource
 	 */

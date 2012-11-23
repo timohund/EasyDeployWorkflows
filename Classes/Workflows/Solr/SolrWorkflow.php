@@ -11,8 +11,6 @@ class SolrWorkflow extends Workflows\AbstractWorkflow {
 	 */
 	protected $workflowConfiguration;
 
-
-
 	/**
 	 * @param string $releaseVersion
 	 * @return mixed|void

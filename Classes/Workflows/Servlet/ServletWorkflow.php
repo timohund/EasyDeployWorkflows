@@ -6,7 +6,6 @@ use EasyDeployWorkflows\Workflows as Workflows;
 
 class ServletWorkflow extends Workflows\AbstractWorkflow {
 
-
 	/**
 	 * @var \EasyDeployWorkflows\Workflows\Servlet\ServletConfiguration
 	 */
@@ -16,7 +15,6 @@ class ServletWorkflow extends Workflows\AbstractWorkflow {
 	 * @var string
 	 */
 	const CURL_DEPLOY_COMMAND = 'curl --upload-file %s -u %s "http://localhost:%s/manager/deploy?path=%s&update=true"';
-
 
 	/**
 	 * @param string $releaseVersion

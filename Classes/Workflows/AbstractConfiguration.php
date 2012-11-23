@@ -3,6 +3,7 @@
 namespace EasyDeployWorkflows\Workflows;
 
 use EasyDeployWorkflows\Workflows;
+use EasyDeployWorkflows\Workflows\Exception as Exception;
 
 abstract class AbstractConfiguration {
 
@@ -95,7 +96,19 @@ abstract class AbstractConfiguration {
 	/**
 	 * @return boolean
 	 */
-	abstract function isValid();
+	public function isValid() {
+		try {
+			$this->validate();
+		}catch(Exception\InvalidConfigurationException $e) {
+			return false;
+		}
 
+		return true;
+	}
 
+	/**
+	 * @return boolean
+	 * throws Exception\InvalidConfigurationException
+	 */
+	abstract function validate();
 }
