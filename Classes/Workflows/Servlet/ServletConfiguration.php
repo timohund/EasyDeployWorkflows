@@ -149,22 +149,22 @@ class ServletConfiguration extends Workflows\AbstractWorkflowConfiguration {
 	 */
 	public function validate() {
 		if($this->getTomcatVersion() == '') {
-			throw new Exception\InvalidConfigurationException('Invalid tomcat version '.$this->getTomcatVersion());
+			throw new \EasyDeployWorkflows\Exception\InvalidConfigurationException('Invalid tomcat version '.$this->getTomcatVersion());
 		}
 
 		if(!$this->hasServletServers()) {
 			$message = 'Please configure at least one servlet server for workflow: '.get_class($this);
-			throw new Exception\InvalidConfigurationException($message);
+			throw new \EasyDeployWorkflows\Exception\InvalidConfigurationException($message);
 		}
 
 		if(trim($this->tomcatPassword) == '') {
 			$message = 'Please configured a tomcat password for workflow: '.get_class($this);
-			throw new Exception\InvalidConfigurationException($message);
+			throw new \EasyDeployWorkflows\Exception\InvalidConfigurationException($message);
 		}
 
 		if(trim($this->tomcatUsername) == '') {
 			$message = 'Please configure a tomcat username for workflow: '.get_class($this);
-			throw new Exception\InvalidConfigurationException($message);
+			throw new \EasyDeployWorkflows\Exception\InvalidConfigurationException($message);
 		}
 
 		return true;

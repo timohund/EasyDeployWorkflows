@@ -6,7 +6,7 @@ use EasyDeployWorkflows\Workflows as Workflows;
 use EasyDeployWorkflows\Workflows\Exception as Exception;
 
 
-class WebConfiguration extends Workflows\AbstractWorkflowConfiguration {
+class NFSWebConfiguration extends Workflows\AbstractWorkflowConfiguration {
 
 	/**
 	 * Name of the environment that should be used as master for backups.
@@ -27,7 +27,7 @@ class WebConfiguration extends Workflows\AbstractWorkflowConfiguration {
 
 	/**
 	 * @param string $apacheGroup
-	 * @return WebConfiguration
+	 * @return NFSWebConfiguration
 	 */
 	public function setApacheGroup($apacheGroup) {
 		$this->apacheGroup = $apacheGroup;
@@ -90,7 +90,7 @@ class WebConfiguration extends Workflows\AbstractWorkflowConfiguration {
 
 	/**
 	 * @param string $backupStorageRoot
-	 * @return WebConfiguration
+	 * @return NFSWebConfiguration
 	 */
 	public function setBackupStorageRootFolder($backupStorageRoot) {
 		$this->setFolder($backupStorageRoot, 'backupstorage');
@@ -106,7 +106,7 @@ class WebConfiguration extends Workflows\AbstractWorkflowConfiguration {
 
 	/**
 	 * @param string $backupStorageMinifiedRoot
-	 * @return WebConfiguration
+	 * @return NFSWebConfiguration
 	 */
 	public function setBackupStorageMinifiedRootFolder($backupStorageMinifiedRoot) {
 		$this->setFolder($backupStorageMinifiedRoot, 'backupstorage_minified');
@@ -136,11 +136,35 @@ class WebConfiguration extends Workflows\AbstractWorkflowConfiguration {
 
 	/**
 	 * @param string $hostName
-	 * @return WebConfiguration
+	 * @return NFSWebConfiguration
 	 */
 	public function addWebServer($hostName) {
 		$this->addServer($hostName,'www');
 		return $this;
+	}
+
+	/**
+	 * @param string $hostName
+	 * @return NFSWebConfiguration
+	 */
+	public function setNFSServer($hostName) {
+		$this->addServer($hostName,'nfs');
+		return $this;
+	}
+
+	/**
+	 * @return array
+	 */
+	public function getNfsServer() {
+		$servers = $this->getServers('nfs');
+		return $servers[0];
+	}
+
+	/**
+	 * @return bool
+	 */
+	public function hasNFSServer() {
+		return count($this->getServers('nfs')) == 1;
 	}
 
 	/**
@@ -167,7 +191,7 @@ class WebConfiguration extends Workflows\AbstractWorkflowConfiguration {
 
 	/**
 	 * @param string $hostName
-	 * @return WebConfiguration
+	 * @return NFSWebConfiguration
 	 */
 	public function addIndexerServer($hostName) {
 		$this->addServer($hostName,'indexer');
@@ -207,7 +231,7 @@ class WebConfiguration extends Workflows\AbstractWorkflowConfiguration {
 	 * @return string
 	 */
 	public function getWorkflowClassName() {
-		return 'EasyDeployWorkflows\Workflows\Web\WebWorkflow';
+		return 'EasyDeployWorkflows\Workflows\Web\NFSWebWorkflow';
 	}
 
 	/**
@@ -215,11 +239,15 @@ class WebConfiguration extends Workflows\AbstractWorkflowConfiguration {
 	 */
 	public function validate() {
 		if(!$this->hasWebServers()) {
-			throw new Exception\InvalidConfigurationException("Please configure at least one web for workflow: ".get_class($this));
+			throw new \EasyDeployWorkflows\Exception\InvalidConfigurationException("Please configure at least one web for workflow: ".get_class($this));
 		}
 
 		if(!$this->hasWebRootFolder()) {
-			throw new Exception\InvalidConfigurationException("Please configure the webroot folder for workflow: ".get_class($this));
+			throw new \EasyDeployWorkflows\Exception\InvalidConfigurationException("Please configure the webroot folder for workflow: ".get_class($this));
+		}
+
+		if(!$this->hasNFSServer()) {
+			throw new \EasyDeployWorkflows\Exception\InvalidConfigurationException("No NFS Server configured: ".get_class($this));
 		}
 
 		return true;

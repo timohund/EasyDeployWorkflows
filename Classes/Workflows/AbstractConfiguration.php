@@ -5,7 +5,10 @@ namespace EasyDeployWorkflows\Workflows;
 use EasyDeployWorkflows\Workflows;
 use EasyDeployWorkflows\Workflows\Exception as Exception;
 
-abstract class AbstractConfiguration {
+require_once dirname(__FILE__) . '/../ValidateableInterface.php';
+
+
+abstract class AbstractConfiguration implements \EasyDeployWorkflows\ValidateableInterface {
 
 	/**
 	 * @var
@@ -16,6 +19,27 @@ abstract class AbstractConfiguration {
 	 * @var
 	 */
 	protected $servers = array();
+
+	/**
+	 * @var string
+	 */
+	protected $releaseVersion;
+
+	/**
+	 * @param string $releaseVersion
+	 */
+	public function setReleaseVersion($releaseVersion)
+	{
+		$this->releaseVersion = $releaseVersion;
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getReleaseVersion()
+	{
+		return $this->releaseVersion;
+	}
 
 	/**
 	 * @param string $scope
@@ -94,21 +118,21 @@ abstract class AbstractConfiguration {
 	}
 
 	/**
-	 * @return boolean
-	 */
+	* @return boolean
+	*/
 	public function isValid() {
 		try {
 			$this->validate();
-		}catch(Exception\InvalidConfigurationException $e) {
+		}catch(\EasyDeployWorkflows\Exception\InvalidConfigurationException $e) {
 			return false;
 		}
-
 		return true;
 	}
 
 	/**
-	 * @return boolean
-	 * throws Exception\InvalidConfigurationException
-	 */
+	* @return boolean
+	* throws Exception\InvalidConfigurationException
+	*/
 	abstract function validate();
+
 }

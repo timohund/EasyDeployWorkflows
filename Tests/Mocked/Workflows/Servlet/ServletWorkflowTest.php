@@ -3,10 +3,7 @@
 use EasyDeployWorkflows\Workflows\Servlet as Servlet;
 use EasyDeployWorkflows\Workflows as Workflows;
 
-require_once EASYDEPLOY_WORKFLOW_ROOT.'Classes/Workflows/AbstractConfiguration.php';
-require_once EASYDEPLOY_WORKFLOW_ROOT.'Classes/Workflows/AbstractWorkflow.php';
-require_once EASYDEPLOY_WORKFLOW_ROOT . 'Classes/Workflows/Servlet/ServletConfiguration.php';
-require_once EASYDEPLOY_WORKFLOW_ROOT . 'Classes/Workflows/Servlet/ServletWorkflow.php';
+require_once EASYDEPLOY_WORKFLOW_ROOT . 'Classes/Autoloader.php';
 
 class ServletWorkflowTest extends PHPUnit_Framework_TestCase {
 
@@ -26,14 +23,15 @@ class ServletWorkflowTest extends PHPUnit_Framework_TestCase {
 				->setTomcatUsername('foo')
 				->setTomcatPassword('bar')
 				->setTomcatVersion('6.0.12')
-				->setDeploymentSource('/home/homer.simpson/%s')
-				->setInstallSilent(false);
+				->setDeploymentSource('/home/homer.simpson/###releaseversion###/somedownloadpackage.tar.gz')
+				->setInstallSilent(false)
+				->setReleaseVersion('4711');
 
 		$instanceConfiguration
 				->setProjectName('nasa')
 				->addAllowedDeployServer('localhost')
 				->setEnvironmentName('deploy')
-				->setDeliveryFolder('/home/download');
+				->setDeliveryFolder('/home/download/###releaseversion###');
 
 			/** @var $workflow  EasyDeployWorkflows\Workflows\Servlet\ServletWorkflow */
 		$workflow = $this->getMock(
@@ -62,15 +60,16 @@ class ServletWorkflowTest extends PHPUnit_Framework_TestCase {
 			//will the download be triggered with the expected arguments ?
 		$downloaderMock = $this->getMock('EasyDeploy_Helper_Downloader',array('download'),array(),'',false);
 		$downloaderMock->expects($this->once())->method('download')->with(
-			$localServerMock,'/home/homer.simpson/4711','/home/download/4711'
+			$localServerMock,'/home/homer.simpson/4711/somedownloadpackage.tar.gz','/home/download/4711/'
 		);
 
 		$workflow->injectDownloader($downloaderMock);
 
+
 			//does the deploy service execute the expected commands on the remote solr servers?
-		$solr1ServerMock->expects($this->once())->method('run')->with('curl --upload-file /tmp/4711 -u foo:bar "http://localhost:8080/manager/deploy?path=&update=true"');
-		$solr2ServerMock->expects($this->once())->method('run')->with('curl --upload-file /tmp/4711 -u foo:bar "http://localhost:8080/manager/deploy?path=&update=true"');
-		$workflow->deploy('4711');
+		$solr1ServerMock->expects($this->at(2))->method('run')->with('curl --upload-file /tmp/somedownloadpackage.tar.gz -u foo:bar "http://localhost:8080/manager/deploy?path=&update=true"');
+		$solr2ServerMock->expects($this->at(2))->method('run')->with('curl --upload-file /tmp/somedownloadpackage.tar.gz -u foo:bar "http://localhost:8080/manager/deploy?path=&update=true"');
+		$workflow->deploy();
 	}
 
 }

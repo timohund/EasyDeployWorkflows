@@ -15,23 +15,23 @@ class SolrWorkflow extends Workflows\AbstractWorkflow {
 	 * @param string $releaseVersion
 	 * @return mixed|void
 	 */
-	public function deploy($releaseVersion) {
+	public function deploy() {
 		$localServer = new \EasyDeploy_LocalServer();
 		$this->checkIfAllowedDeployNode($localServer);
 
 		$deployService =  new \EasyDeploy_DeployService($this->getInstallStrategy());
 		$this->initDeployService($deployService);
 
-		$deploymentPackage = sprintf($this->workflowConfiguration->getDeploymentSource(),$releaseVersion);
-		$this->out('Start deploying SolrConf Package: "'.$deploymentPackage.'"', \EasyDeploy_Utils::MESSAGE_TYPE_INFO);
-		$deployService->deploy( $localServer, $releaseVersion, $deploymentPackage);
+		$deploymentPackage = $this->replaceMarkers($this->workflowConfiguration->getDeploymentSource());
+		$this->out('Start deploying SolrConf Package: "'.$deploymentPackage.'"', self::MESSAGE_TYPE_INFO);
+		$deployService->deploy( $localServer, $this->workflowConfiguration->getReleaseVersion(), $deploymentPackage);
 
 		$this->reloadSolr($localServer);
 	}
 
 	protected function reloadSolr(EasyDeploy_AbstractServer $server) {
 		if ($this->workflowConfiguration->getRestartCommand() != '') {
-			$this->out('No restart Command is Set for the deployment!',EasyDeploy_Utils::MESSAGE_TYPE_WARNING);
+			$this->out('No restart Command is Set for the deployment!',self::MESSAGE_TYPE_WARNING);
 		}
 		$server->run($this->workflowConfiguration->getRestartCommand());
 	}

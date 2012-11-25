@@ -2,13 +2,12 @@
 
 use EasyDeployWorkflows\Workflows\Web;
 
-require_once EASYDEPLOY_WORKFLOW_ROOT.'Classes/Workflows/AbstractConfiguration.php';
-require_once EASYDEPLOY_WORKFLOW_ROOT . 'Classes/Workflows/Web/WebConfiguration.php';
+require_once EASYDEPLOY_WORKFLOW_ROOT . 'Classes/Autoloader.php';
 
 class WebConfigurationTest extends PHPUnit_Framework_TestCase {
 
 	/**
-	 * @var EasyDeployWorkflows\Workflows\Web\WebConfiguration
+	 * @var EasyDeployWorkflows\Workflows\Web\NFSWebConfiguration
 	 */
 	protected $configuration;
 
@@ -16,7 +15,7 @@ class WebConfigurationTest extends PHPUnit_Framework_TestCase {
 	 * @return void
 	 */
 	public function setUp() {
-		$this->configuration = new EasyDeployWorkflows\Workflows\Web\WebConfiguration();
+		$this->configuration = new EasyDeployWorkflows\Workflows\Web\NFSWebConfiguration();
 	}
 
 	/**

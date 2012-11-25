@@ -4,22 +4,6 @@ namespace EasyDeployWorkflows\Workflows;
 
 use EasyDeployWorkflows\Workflows;
 
-require_once dirname(__FILE__) . '/AbstractConfiguration.php';
-require_once dirname(__FILE__) . '/AbstractWorkflowConfiguration.php';
-require_once dirname(__FILE__) . '/AbstractWorkflow.php';
-
-require_once dirname(__FILE__) . '/InstanceConfiguration.php';
-
-require_once dirname(__FILE__) . '/Servlet/ServletConfiguration.php';
-require_once dirname(__FILE__) . '/Servlet/ServletWorkflow.php';
-
-require_once dirname(__FILE__) . '/Web/WebConfiguration.php';
-require_once dirname(__FILE__) . '/Web/WebWorkflow.php';
-
-
-require_once dirname(__FILE__) . '/Solr/SolrConfiguration.php';
-require_once dirname(__FILE__) . '/Solr/SolrWorkflow.php';
-
 class WorkflowFactory {
 
 	/**
@@ -49,7 +33,7 @@ class WorkflowFactory {
 	 * @param $name
 	 * @param InstanceConfiguration $instanceConfiguration
 	 * @param AbstractWorkflowConfiguration $workflowConfiguration
-	 * @return AbstractWorkflows
+	 * @return AbstractWorkflow
 	 */
 	protected function getWorkflow($name,InstanceConfiguration $instanceConfiguration, AbstractWorkflowConfiguration $workflowConfiguration) {
 		return new $name($instanceConfiguration,$workflowConfiguration);

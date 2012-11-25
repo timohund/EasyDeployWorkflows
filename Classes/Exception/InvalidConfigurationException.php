@@ -1,5 +1,5 @@
 <?php
 
-namespace EasyDeployWorkflows\Workflows\Exception;
+namespace EasyDeployWorkflows\Exception;
 
 class InvalidConfigurationException extends \Exception {}
