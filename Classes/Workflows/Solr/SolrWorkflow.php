@@ -31,7 +31,7 @@ class SolrWorkflow extends Workflows\AbstractWorkflow {
 		$this->reloadSolr($localServer);
 	}
 
-	protected function reloadSolr(EasyDeploy_AbstractServer $server) {
+	protected function reloadSolr(\EasyDeploy_AbstractServer $server) {
 		if ($this->workflowConfiguration->getRestartCommand() != '') {
 			$this->out('No restart Command is Set for the deployment!',self::MESSAGE_TYPE_WARNING);
 		}
@@ -47,7 +47,7 @@ class SolrWorkflow extends Workflows\AbstractWorkflow {
 	/**
 	 * @param EasyDeploy_DeployService $deployService
 	 */
-	protected function initDeployService(EasyDeploy_DeployService $deployService ) {
+	protected function initDeployService(\EasyDeploy_DeployService $deployService ) {
 		$deployService->setEnvironmentName($this->instanceConfiguration->getEnvironmentName());
 		$deployService->setDeliveryFolder($this->instanceConfiguration->getDeliveryFolder());
 		$deployService->setSystemPath($this->workflowConfiguration->getInstancePath());

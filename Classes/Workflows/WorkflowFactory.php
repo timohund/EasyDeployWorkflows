@@ -68,6 +68,9 @@ class WorkflowFactory {
 		}
 		include( $configurationFile );
 
+		if (!isset($$instanceConfigurationVariableName)) {
+			throw new \Exception('No Instance Configuration found! Expect a variable $'.$instanceConfigurationVariableName);
+		}
 		$instanceConfiguration = $$instanceConfigurationVariableName;
 		if (!$instanceConfiguration instanceof InstanceConfiguration
 			|| $instanceConfiguration->getEnvironmentName() != $environmentName
@@ -75,13 +78,12 @@ class WorkflowFactory {
 			throw new \Exception('No Instance Environment Data could be found or it is invalid! Expected a variable with the name $'.$instanceConfigurationVariableName);
 		}
 
-		$workFlowConfiguration = $$workFlowConfigurationVariableName;
-		if (!$workFlowConfiguration instanceof AbstractWorkflowConfiguration
+		if (!isset($$workFlowConfigurationVariableName) || !$$workFlowConfigurationVariableName instanceof AbstractWorkflowConfiguration
 			) {
 			throw new \EasyDeployWorkflows\Workflows\Exception\WorkflowConfigurationNotExistendException('No Workflow Configuration found or it is invalid! Expected a Variable with the name $'.$workFlowConfigurationVariableName);
 		}
-		$workFlowConfiguration->setReleaseVersion($releaseVersion);
-		return $this->create($instanceConfiguration, $workFlowConfiguration);
+		$$workFlowConfigurationVariableName->setReleaseVersion($releaseVersion);
+		return $this->create($instanceConfiguration, $$workFlowConfigurationVariableName);
 	}
 
 	/**
