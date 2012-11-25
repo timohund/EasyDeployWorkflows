@@ -17,7 +17,9 @@ class SolrWorkflow extends Workflows\AbstractWorkflow {
 	 */
 	public function deploy() {
 		$localServer = new \EasyDeploy_LocalServer();
-		$this->checkIfAllowedDeployNode($localServer);
+
+		$task = new \EasyDeployWorkflows\Tasks\Common\CheckCorrectDeployNode();
+		$task->run();
 
 		$deployService =  new \EasyDeploy_DeployService($this->getInstallStrategy());
 		$this->initDeployService($deployService);
