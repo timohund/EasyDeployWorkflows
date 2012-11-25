@@ -59,7 +59,7 @@ class InstanceConfiguration extends AbstractConfiguration {
 	 * @return \EasyDeployWorkflows\Workflows\InstanceConfiguration
 	 */
 	public function setDeliveryFolder($deliveryFolder) {
-		$this->deliveryFolder = $deliveryFolder;
+		$this->deliveryFolder = rtrim($deliveryFolder,DIRECTORY_SEPARATOR).DIRECTORY_SEPARATOR;
 		return $this;
 	}
 
@@ -122,15 +122,15 @@ class InstanceConfiguration extends AbstractConfiguration {
 	 */
 	public function validate() {
 		if(!$this->hasAllowedDeployServers()) {
-			throw new Exception\InvalidConfigurationException('Please configure an allowed deploy server!');
+			throw new \EasyDeployWorkflows\Exception\InvalidConfigurationException('Please configure an allowed deploy server!');
 		}
 
 		if(!$this->hasEnvironmentName()) {
-			throw new Exception\InvalidConfigurationException('Please configure an environment name!');
+			throw new \EasyDeployWorkflows\Exception\InvalidConfigurationException('Please configure an environment name!');
 		}
 
 		if(!$this->hasDeliveryFolder()) {
-			throw new Exception\InvalidConfigurationException("Please configure a delivery folder!");
+			throw new \EasyDeployWorkflows\Exception\InvalidConfigurationException("Please configure a delivery folder!");
 		}
 
 		return true;

@@ -4,8 +4,9 @@ namespace EasyDeployWorkflows\Workflows;
 
 use EasyDeployWorkflows\Workflows;
 
-abstract class AbstractWorkflow {
+require_once dirname(__FILE__) . '/../AbstractPart.php';
 
+abstract class AbstractWorkflow extends \EasyDeployWorkflows\AbstractPart {
 	/**
 	 * @var InstanceConfiguration
 	 */
@@ -17,7 +18,7 @@ abstract class AbstractWorkflow {
 	protected $workflowConfiguration;
 
 	/**
-	 * @var EasyDeploy_Helper_Downloader
+	 * @var \EasyDeploy_Helper_Downloader
 	 */
 	protected $downloader;
 
@@ -31,6 +32,7 @@ abstract class AbstractWorkflow {
 
 		$this->instanceConfiguration = $instanceConfiguration;
 		$this->workflowConfiguration = $workflowConfiguration;
+		$this->workflowInitialisation();
 	}
 
 	/**
@@ -41,28 +43,32 @@ abstract class AbstractWorkflow {
 	}
 
 	/**
-	 * @param string $message
-	 * @param string $type
+	 * Can be used to do individual workflow initialisation and/or checks
 	 */
-	protected function out($message, $type='') {
-		echo \EasyDeploy_Utils::formatMessage($message,$type).PHP_EOL;
+	protected function workflowInitialisation() {
+
 	}
 
 	/**
-	 * @param string $serverName
-	 * @return \EasyDeploy_LocalServer|\EasyDeploy_RemoteServer
-	 */
-	protected function getServer($serverName) {
-		if ($serverName == 'localhost') {
-			return new \EasyDeploy_LocalServer($serverName);
-		}
-
-		return new \EasyDeploy_RemoteServer($serverName);
-	}
-
-	/**
-	 * @param string $releaseVersion
+	 * @param $string
 	 * @return mixed
 	 */
-	abstract function deploy($releaseVersion);
+	protected function replaceMarkers($string) {
+		return $this->replaceConfigurationMarkers($string,$this->workflowConfiguration,$this->instanceConfiguration);
+	}
+
+	/**
+	 * @return \EasyDeployWorkflows\Tasks\TaskRunInformation
+	 */
+	protected function createTaskRunInformation() {
+		$taskRunInformation = new \EasyDeployWorkflows\Tasks\TaskRunInformation();
+		$taskRunInformation->setInstanceConfiguration($this->instanceConfiguration);
+		$taskRunInformation->setWorkflowConfiguration($this->workflowConfiguration);
+		return $taskRunInformation;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	abstract function deploy();
 }

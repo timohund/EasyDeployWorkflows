@@ -66,11 +66,11 @@ class SolrConfiguration extends Workflows\AbstractWorkflowConfiguration {
 	 */
 	public function validate() {
 		if(trim($this->restartCommand) == '') {
-			throw new Exception\InvalidConfigurationException('Please configure a start command for the solr configuration!');
+			throw new \EasyDeployWorkflows\Exception\InvalidConfigurationException('Please configure a start command for the solr configuration!');
 		}
 
 		if(trim($this->instancePath) == '') {
-			throw new Exception\InvalidConfigurationException('Please configure an instance path for the solr configuration!');
+			throw new \EasyDeployWorkflows\Exception\InvalidConfigurationException('Please configure an instance path for the solr configuration!');
 		}
 
 		return true;
