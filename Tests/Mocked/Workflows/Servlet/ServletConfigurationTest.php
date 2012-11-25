@@ -2,9 +2,7 @@
 
 use EasyDeployWorkflows\Workflows\Servlet;
 
-require_once EASYDEPLOY_WORKFLOW_ROOT.'Classes/Workflows/AbstractConfiguration.php';
-require_once EASYDEPLOY_WORKFLOW_ROOT . 'Classes/Workflows/AbstractWorkflowConfiguration.php';
-require_once EASYDEPLOY_WORKFLOW_ROOT . 'Classes/Workflows/Servlet/ServletConfiguration.php';
+require_once EASYDEPLOY_WORKFLOW_ROOT . 'Classes/Autoloader.php';
 
 class ServletConfigurationTest extends PHPUnit_Framework_TestCase {
 

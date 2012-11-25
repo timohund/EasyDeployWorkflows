@@ -20,15 +20,14 @@ class ServletWorkflow extends Workflows\AbstractWorkflow {
 	 * @param string $releaseVersion
 	 * @return mixed|void
 	 */
-	public function deploy($releaseVersion) {
+	public function deploy() {
 		$localServer 				= $this->getServer('localhost');
-		$deploymentPackageSource	= $this->workflowConfiguration->getDeploymentSource();
-		$deliveryFolder				= $this->instanceConfiguration->getDeliveryFolder();
 
-		$downloadSource 			= sprintf($deploymentPackageSource, $releaseVersion);
-		$this->downloader->download($localServer,$downloadSource,$deliveryFolder.'/'.$releaseVersion);
+		$deliveryFolder				= $this->replaceMarkers($this->instanceConfiguration->getDeliveryFolder());
+		$downloadSource = $this->replaceMarkers($this->workflowConfiguration->getDeploymentSource());
+		$this->downloader->download($localServer,$downloadSource,$deliveryFolder);
 
-		$downloadedWarFile 			= $deliveryFolder.'/'.$releaseVersion.'/'.pathinfo($downloadSource,PATHINFO_BASENAME);
+		$downloadedWarFile 			= $deliveryFolder.pathinfo($downloadSource,PATHINFO_BASENAME);
 		$tmpWarLocation 			= '/tmp/'.pathinfo($downloadSource,PATHINFO_BASENAME);
 
 		$tomcatAuthorization		= $this->workflowConfiguration->getTomcatUsername().':'.
@@ -40,6 +39,7 @@ class ServletWorkflow extends Workflows\AbstractWorkflow {
 
 		foreach ($this->workflowConfiguration->getServletServers() as $servletServer) {
 			$server = $this->getServer($servletServer);
+			$server->run('rm -f '.$tmpWarLocation);
 			$server->copyLocalFile($downloadedWarFile, $tmpWarLocation);
 			$server->run($curlCommand);
 		}
