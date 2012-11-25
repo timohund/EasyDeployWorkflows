@@ -27,9 +27,7 @@ class TaskBasedWorkflow extends AbstractWorkflow {
 	}
 
 	public function deploy() {
-		$taskRunInformation = new \EasyDeployWorkflows\Tasks\TaskRunInformation();
-		$taskRunInformation->setInstanceConfiguration($this->instanceConfiguration);
-		$taskRunInformation->setWorkflowConfiguration($this->workflowConfiguration);
+		$taskRunInformation = $this->createTaskRunInformation();
 		foreach ($this->tasks as $taskName => $task) {
 			$this->out(' [Task] '.$taskName.' starting:');
 			$task->run($taskRunInformation);

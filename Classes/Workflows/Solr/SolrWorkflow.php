@@ -19,7 +19,7 @@ class SolrWorkflow extends Workflows\AbstractWorkflow {
 		$localServer = new \EasyDeploy_LocalServer();
 
 		$task = new \EasyDeployWorkflows\Tasks\Common\CheckCorrectDeployNode();
-		$task->run();
+		$task->run($this->createTaskRunInformation());
 
 		$deployService =  new \EasyDeploy_DeployService($this->getInstallStrategy());
 		$this->initDeployService($deployService);

@@ -5,7 +5,9 @@ namespace EasyDeployWorkflows\Tasks;
 use EasyDeployWorkflows\Workflows;
 
 
-
+/**
+ * A task is something that encapsulates a certain part of todo
+ */
 abstract class AbstractTask extends \EasyDeployWorkflows\AbstractPart implements \EasyDeployWorkflows\ValidateableInterface {
 
 

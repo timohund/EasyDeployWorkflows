@@ -136,7 +136,7 @@ class RunPackageInstallBinaries extends \EasyDeployWorkflows\Tasks\AbstractServe
 	/**
 	 * gets the relevant backupstorage root
 	 */
-	protected function getBackupStorageRoot(\EasyDeployWorkflows\Tasks\TaskRunInformation $taskRunInformation, $server) {
+	protected function getBackupStorageRoot(\EasyDeployWorkflows\Tasks\TaskRunInformation $taskRunInformation,\EasyDeploy_AbstractServer $server) {
 		$this->out('Checking The Existence of BackupStorage', self::MESSAGE_TYPE_WARNING);
 
 		$backupStorageRoot 			= $taskRunInformation->getWorkflowConfiguration()->getBackupStorageRootFolder();

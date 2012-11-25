@@ -58,6 +58,16 @@ abstract class AbstractWorkflow extends \EasyDeployWorkflows\AbstractPart {
 	}
 
 	/**
+	 * @return \EasyDeployWorkflows\Tasks\TaskRunInformation
+	 */
+	protected function createTaskRunInformation() {
+		$taskRunInformation = new \EasyDeployWorkflows\Tasks\TaskRunInformation();
+		$taskRunInformation->setInstanceConfiguration($this->instanceConfiguration);
+		$taskRunInformation->setWorkflowConfiguration($this->workflowConfiguration);
+		return $taskRunInformation;
+	}
+
+	/**
 	 * @return mixed
 	 */
 	abstract function deploy();
