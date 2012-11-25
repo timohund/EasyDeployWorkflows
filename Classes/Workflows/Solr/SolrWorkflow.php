@@ -49,7 +49,7 @@ class SolrWorkflow extends Workflows\AbstractWorkflow {
 	 */
 	protected function initDeployService(\EasyDeploy_DeployService $deployService ) {
 		$deployService->setEnvironmentName($this->instanceConfiguration->getEnvironmentName());
-		$deployService->setDeliveryFolder($this->instanceConfiguration->getDeliveryFolder());
-		$deployService->setSystemPath($this->workflowConfiguration->getInstancePath());
+		$deployService->setDeliveryFolder($this->replaceMarkers($this->instanceConfiguration->getDeliveryFolder()));
+		$deployService->setSystemPath($this->replaceMarkers($this->workflowConfiguration->getInstancePath()));
 	}
 }
