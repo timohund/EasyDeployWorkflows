@@ -26,12 +26,13 @@ class RunScriptTest extends PHPUnit_Framework_TestCase {
 	/**
 	 *
 	 * @test
+	 * @expectedException \EasyDeployWorkflows\Exception\FileNotFoundException
 	 * @return void
 	 */
 	public function canThrowExepctionIfScriptIsNotThere() {
-		$this->setExpectedException('Exception');
 		$task = new \EasyDeployWorkflows\Tasks\Common\RunScript();
-		$serverMock	 = $this->getMock('EasyDeploy_RemoteServer',array('run','isDir'),array(),'',false);
+		$serverMock	 = $this->getMock('EasyDeploy_RemoteServer',array('run','isFile'),array(),'',false);
+		$serverMock->expects($this->once())->method('isFile')->will($this->returnValue(false));
 		$task->addServer($serverMock);
 		$task->setScript('/folder');
 		$taskRunInformation = new Tasks\TaskRunInformation();

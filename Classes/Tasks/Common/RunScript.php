@@ -21,16 +21,14 @@ class RunScript extends \EasyDeployWorkflows\Tasks\AbstractServerTask  {
 	/**
 	 * @param boolean $isOptional
 	 */
-	public function setIsOptional($isOptional)
-	{
+	public function setIsOptional($isOptional) {
 		$this->isOptional = $isOptional;
 	}
 
 	/**
 	 * @param string $folder
 	 */
-	public function setScript($script)
-	{
+	public function setScript($script) {
 		$this->script = $script;
 	}
 
@@ -39,8 +37,10 @@ class RunScript extends \EasyDeployWorkflows\Tasks\AbstractServerTask  {
 	 * @return mixed
 	 */
 	protected function runOnServer(\EasyDeployWorkflows\Tasks\TaskRunInformation $taskRunInformation,\EasyDeploy_AbstractServer $server) {
+
 		if (!$server->isFile($this->script) && !$this->isOptional) {
-			throw new \Exception('Script is not existend!');
+			$message = 'Try to run script that not exists '.htmlspecialchars($this->script);
+			throw new \EasyDeployWorkflows\Exception\FileNotFoundException($message);
 		}
 
 		if ($server->isFile($this->script)) {
@@ -52,12 +52,13 @@ class RunScript extends \EasyDeployWorkflows\Tasks\AbstractServerTask  {
 
 	/**
 	 * @return boolean
-	 * throws Exception\InvalidConfigurationException
+	 * @throws \EasyDeployWorkflows\Exception\InvalidConfigurationException
 	 */
 	public function validate() {
 		if (!isset($this->script)) {
 			throw new \EasyDeployWorkflows\Exception\InvalidConfigurationException('Script not set');
 		}
+
 		return true;
 	}
 }

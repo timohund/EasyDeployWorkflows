@@ -48,6 +48,7 @@ abstract class AbstractServerTask extends AbstractTask {
 		if (empty($this->servers)) {
 			$this->out('No servers to execute the task available',self::MESSAGE_TYPE_WARNING);
 		}
+
 		foreach ($this->servers as $server) {
 			$this->runOnServer($taskRunInformation, $server);
 		}

@@ -36,20 +36,12 @@ class RunPackageInstallBinaries extends \EasyDeployWorkflows\Tasks\AbstractServe
 	protected $packageFolder;
 
 	/**
-	 * @param string $packageFolder
-	 */
-	public function setPackageFolder($packageFolder)
-	{
-		$this->packageFolder = $packageFolder;
-	}
-
-	/**
 	 * @var \EasyDeploy_Helper_Downloader
 	 */
 	protected $downloader;
 
 	public function __construct() {
-		$this->injectDownloader(new \EasyDeploy_Helper_Downloader());
+	//	$this->injectDownloader(new \EasyDeploy_Helper_Downloader());
 	}
 
 	/**
@@ -59,17 +51,23 @@ class RunPackageInstallBinaries extends \EasyDeployWorkflows\Tasks\AbstractServe
 		$this->downloader = $downloader;
 	}
 
-
+	/**
+	 * @param string $packageFolder
+	 */
+	public function setPackageFolder($packageFolder) {
+		$this->packageFolder = $packageFolder;
+	}
 
 	/**
 	 * @param string $targetSystemPath
 	 */
-	public function setTargetSystemPath($targetSystemPath)
-	{
+	public function setTargetSystemPath($targetSystemPath) {
 		$this->targetSystemPath = $targetSystemPath;
 	}
 
-
+	/**
+	 * @param string $bin
+	 */
 	public function setPHPBinary($bin) {
 		if (file_exists($bin) && is_executable($bin)) {
 			$this->phpbinary = $bin;
@@ -100,15 +98,11 @@ class RunPackageInstallBinaries extends \EasyDeployWorkflows\Tasks\AbstractServe
 	}
 
 	/**
-
-
-	/**
 	 * @param TaskRunInformation $taskRunInformation
 	 * @return mixed
 	 */
 	protected function runOnServer(\EasyDeployWorkflows\Tasks\TaskRunInformation $taskRunInformation,\EasyDeploy_AbstractServer $server) {
 		$additionalParameters = '';
-
 		$installBinariesFolder = $this->replaceConfigurationMarkers($this->packageFolder.'/installbinaries',$taskRunInformation->getWorkflowConfiguration(),$taskRunInformation->getInstanceConfiguration());
 		if (!$server->isDir($installBinariesFolder)) {
 			throw new \Exception('No Installbinaries are available in '.$installBinariesFolder);
@@ -130,7 +124,6 @@ class RunPackageInstallBinaries extends \EasyDeployWorkflows\Tasks\AbstractServe
 			--systemPath="' . $this->targetSystemPath  . '" \
 			--backupstorageroot="' . $this->getBackupStorageRoot($taskRunInformation, $server) . '" \
 			--environmentName="' . $taskRunInformation->getInstanceConfiguration()->getEnvironmentName() . '"'.$additionalParameters, TRUE);
-
 	}
 
 	/**
@@ -180,7 +173,7 @@ class RunPackageInstallBinaries extends \EasyDeployWorkflows\Tasks\AbstractServe
 	}
 	/**
 	 * @return boolean
-	 * throws Exception\InvalidConfigurationException
+	 * @throws \EasyDeployWorkflows\Exception\InvalidConfigurationException
 	 */
 	public function validate() {
 		if (empty($this->packageFolder)) {
