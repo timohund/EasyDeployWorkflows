@@ -41,7 +41,7 @@ class RunPackageInstallBinaries extends \EasyDeployWorkflows\Tasks\AbstractServe
 	protected $downloader;
 
 	public function __construct() {
-	//	$this->injectDownloader(new \EasyDeploy_Helper_Downloader());
+		$this->injectDownloader(new \EasyDeploy_Helper_Downloader());
 	}
 
 	/**
