@@ -2,9 +2,7 @@
 
 use EasyDeployWorkflows\Tasks as Tasks;
 
-require_once EASYDEPLOY_WORKFLOW_ROOT . 'Classes/Autoloader.php';
-
-class RunPackageInstallerBinariesTest extends PHPUnit_Framework_TestCase {
+class RunPackageInstallerBinariesTest extends AbstractMockedTest {
 
 	/**
 	 * @test
@@ -16,7 +14,7 @@ class RunPackageInstallerBinariesTest extends PHPUnit_Framework_TestCase {
 
 		$instanceConfiguration = new \EasyDeployWorkflows\Workflows\InstanceConfiguration();
 
-		$taskConfiguration = new \EasyDeployWorkflows\Tasks\TaskRunInformation();
+		$taskConfiguration = new Tasks\TaskRunInformation();
 		$taskConfiguration->setWorkflowConfiguration($workflowConfiguration);
 		$taskConfiguration->setInstanceConfiguration($instanceConfiguration);
 

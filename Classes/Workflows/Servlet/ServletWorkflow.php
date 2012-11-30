@@ -12,11 +12,6 @@ class ServletWorkflow extends Workflows\AbstractWorkflow {
 	protected $workflowConfiguration;
 
 	/**
-	 * @var string
-	 */
-	const CURL_DEPLOY_COMMAND = 'curl --upload-file %s -u %s "http://localhost:%s/manager/deploy?path=%s&update=true"';
-
-	/**
 	 * @param string $releaseVersion
 	 * @return mixed|void
 	 */
@@ -30,18 +25,42 @@ class ServletWorkflow extends Workflows\AbstractWorkflow {
 		$downloadedWarFile 			= $deliveryFolder.pathinfo($downloadSource,PATHINFO_BASENAME);
 		$tmpWarLocation 			= '/tmp/'.pathinfo($downloadSource,PATHINFO_BASENAME);
 
-		$tomcatAuthorization		= $this->workflowConfiguration->getTomcatUsername().':'.
-									  $this->workflowConfiguration->getTomcatPassword();
-		$tomcatPort					= $this->workflowConfiguration->getTomcatPort();
-		$targetPath					= $this->workflowConfiguration->getTargetPath();
+		$task 						= $this->getDeployWarInTomcatTask(
+			$downloadedWarFile,
+			$tmpWarLocation,
+			$this->workflowConfiguration->getTomcatUsername(),
+			$this->workflowConfiguration->getTomcatPassword(),
+			$this->workflowConfiguration->getTomcatPort(),
+			$this->workflowConfiguration->getTargetPath(),
+			'localhost'
+		);
 
-		$curlCommand 				= sprintf(self::CURL_DEPLOY_COMMAND, $tmpWarLocation,$tomcatAuthorization,$tomcatPort,$targetPath);
+		$task->addServersByName($this->workflowConfiguration->getServletServers());
 
-		foreach ($this->workflowConfiguration->getServletServers() as $servletServer) {
-			$server = $this->getServer($servletServer);
-			$server->run('rm -f '.$tmpWarLocation);
-			$server->copyLocalFile($downloadedWarFile, $tmpWarLocation);
-			$server->run($curlCommand);
-		}
+		return $task->run($this->createTaskRunInformation());
 	}
+
+	/**
+	 * @param $downloadWar
+	 * @param $tmpWar
+	 * @param $tomcatUser
+	 * @param $tomcatPassword
+	 * @param $tomcatPort
+	 * @param $tomcatPath
+	 * @param $tomcatHostname
+	 * @return \EasyDeployWorkflows\Tasks\Servlet\DeployWarInTomcat
+	 */
+	protected function getDeployWarInTomcatTask($downloadWar, $tmpWar, $tomcatUser, $tomcatPassword, $tomcatPort, $tomcatPath, $tomcatHostname) {
+		$task = new \EasyDeployWorkflows\Tasks\Servlet\DeployWarInTomcat();
+		$task->setDownloadWarFile($downloadWar);
+		$task->setTmpWarFile($tmpWar);
+		$task->setTomcatUser($tomcatUser);
+		$task->setTomcatPassword($tomcatPassword);
+		$task->setTomcatPort($tomcatPort);
+		$task->setTomcatPath($tomcatPath);
+		$task->setTomcatHostname($tomcatHostname);
+
+		return $task;
+	}
+
 }

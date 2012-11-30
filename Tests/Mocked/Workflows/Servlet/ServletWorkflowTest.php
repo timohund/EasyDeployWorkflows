@@ -3,12 +3,9 @@
 use EasyDeployWorkflows\Workflows\Servlet as Servlet;
 use EasyDeployWorkflows\Workflows as Workflows;
 
-require_once EASYDEPLOY_WORKFLOW_ROOT . 'Classes/Autoloader.php';
-
-class ServletWorkflowTest extends PHPUnit_Framework_TestCase {
+class ServletWorkflowTest extends AbstractMockedTest {
 
 	/**
-	 *
 	 * @test
 	 * @return void
 	 */

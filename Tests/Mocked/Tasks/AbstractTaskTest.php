@@ -2,9 +2,7 @@
 
 use EasyDeployWorkflows\Task as Task;
 
-require_once EASYDEPLOY_WORKFLOW_ROOT . 'Classes/Autoloader.php';
-
-class AbstractTaskTest extends PHPUnit_Framework_TestCase {
+class AbstractTaskTest extends AbstractMockedTest {
 
 	/**
 	 *

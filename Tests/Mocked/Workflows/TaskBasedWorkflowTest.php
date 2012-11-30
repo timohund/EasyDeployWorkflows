@@ -1,10 +1,6 @@
 <?php
 
-use EasyDeployWorkflows\Workflows;
-
-require_once EASYDEPLOY_WORKFLOW_ROOT . 'Classes/Autoloader.php';
-
-class TaskBasedWorkflowTest extends PHPUnit_Framework_TestCase {
+class TaskBasedWorkflowTest extends AbstractMockedTest {
 
 	/**
 	 * @var \EasyDeployWorkflows\Workflows\TaskBasedWorkflow

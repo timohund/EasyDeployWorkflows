@@ -2,9 +2,7 @@
 
 use EasyDeployWorkflows\Workflows;
 
-require_once EASYDEPLOY_WORKFLOW_ROOT . 'Classes/Autoloader.php';
-
-class InstanceConfigurationTest extends PHPUnit_Framework_TestCase {
+class InstanceConfigurationTest extends AbstractMockedTest {
 
 	/**
 	 * @var EasyDeployWorkflows\Workflows\InstanceConfiguration

@@ -2,9 +2,8 @@
 
 use EasyDeployWorkflows\Workflows\Solr as Solr;
 
-require_once EASYDEPLOY_WORKFLOW_ROOT . 'Classes/Autoloader.php';
 
-class SolrConfigurationTest extends PHPUnit_Framework_TestCase {
+class SolrConfigurationTest extends AbstractMockedTest {
 
 	/**
 	 * @var $configuration Solr\SolrConfiguration

@@ -2,9 +2,7 @@
 
 use EasyDeployWorkflows\Workflows\Web;
 
-require_once EASYDEPLOY_WORKFLOW_ROOT . 'Classes/Autoloader.php';
-
-class WebConfigurationTest extends PHPUnit_Framework_TestCase {
+class WebConfigurationTest extends AbstractMockedTest {
 
 	/**
 	 * @var EasyDeployWorkflows\Workflows\Web\NFSWebConfiguration

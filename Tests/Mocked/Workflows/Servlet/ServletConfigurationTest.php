@@ -2,9 +2,7 @@
 
 use EasyDeployWorkflows\Workflows\Servlet;
 
-require_once EASYDEPLOY_WORKFLOW_ROOT . 'Classes/Autoloader.php';
-
-class ServletConfigurationTest extends PHPUnit_Framework_TestCase {
+class ServletConfigurationTest extends AbstractMockedTest {
 
 	/**
 	 * @var EasyDeployWorkflows\Workflows\Servlet\ServletConfiguration
