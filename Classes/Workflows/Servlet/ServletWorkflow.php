@@ -35,7 +35,9 @@ class ServletWorkflow extends Workflows\AbstractWorkflow {
 			'localhost'
 		);
 
-		$task->addServersByName($this->workflowConfiguration->getServletServers());
+		foreach($this->workflowConfiguration->getServletServers() as $server) {
+			$task->addServer($this->getServer($server));
+		}
 
 		return $task->run($this->createTaskRunInformation());
 	}

@@ -20,8 +20,8 @@ class RunPackageInstallerBinariesTest extends AbstractMockedTest {
 
 			//avoid constructor calling because the downloader is injected there
 			/** @var $task  \EasyDeployWorkflows\Tasks\Web\RunPackageInstallBinaries */
-	//	$task = $this->getMock('EasyDeployWorkflows\Tasks\Web\RunPackageInstallBinaries', array(), array(),'',false);
-		$task = new EasyDeployWorkflows\Tasks\Web\RunPackageInstallBinaries();
+		$task = $this->getMock('EasyDeployWorkflows\Tasks\Web\RunPackageInstallBinaries', array(), array(),'',false);
+	//	$task = new EasyDeployWorkflows\Tasks\Web\RunPackageInstallBinaries();
 		$task->setCreateBackupBeforeInstalling(false);
 		$task->setPackageFolder('/home/package');
 		$task->setPHPBinary('php5');
